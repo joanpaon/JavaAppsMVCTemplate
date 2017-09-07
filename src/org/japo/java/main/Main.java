@@ -15,7 +15,11 @@
  */
 package org.japo.java.main;
 
+import java.util.Properties;
 import org.japo.java.controllers.Controller;
+import org.japo.java.controllers.DAControllerFactory;
+import org.japo.java.libraries.UtilesApp;
+import org.japo.java.libraries.UtilesSwing;
 
 /**
  *
@@ -23,9 +27,38 @@ import org.japo.java.controllers.Controller;
  */
 public class Main {
 
+    // Fichero Propiedades Aplicación
+    public static final String FICHERO_PROPIEDADES = "app.properties";
+
+    // Propiedades App
+    public static final String PRP_PUERTO_BLOQUEO = "gui.puerto_bloqueo";
+    public static final String PRP_LOOK_AND_FEEL = "gui.look_and_feel";
+    public static final String PRP_RUTA_FAVICON = "gui.ruta_favicon";
+    public static final String PRP_DA_FILE = "da.fichero";
+    public static final String PRP_DA_TYPE = "da.tipo";
+
+    // Valores por Defecto
+    public static final String DEF_PUERTO_BLOQUEO = "54321";    
+    public static final String DEF_LOOK_AND_FEEL = UtilesSwing.LNF_WINDOWS;    
+    public static final String DEF_RUTA_FAVICON = "img/favicon.ico";   
+    public static final String DEF_DA_FILE = "datos.json";
+    public static final String DEF_DA_TYPE = DAControllerFactory.DA_TYPE_JSON;
+
     // Punto de entrada a la aplicación
     public static void main(String[] args) {
-        // Lanzar Controlador
-        Controller control = new Controller();
+        // Inicializa Aplicación
+        Main main = new Main();
+
+        // Ejecuta la Aplicación
+        main.launchApp();
+    }
+
+    // Ejecuta la aplicación
+    private void launchApp() {
+        // Cargar Propiedades Aplicación
+        Properties prpApp = UtilesApp.cargarPropiedades(FICHERO_PROPIEDADES);
+
+        // Crear Controlador
+        Controller control = new Controller(prpApp);
     }
 }

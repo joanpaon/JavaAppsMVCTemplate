@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.interfaces;
+package org.japo.java.controllers;
 
 import org.japo.java.controllers.*;
 import org.japo.java.models.Model;
@@ -23,7 +23,7 @@ import org.japo.java.models.Model;
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  *
  */
-public interface IDataAccessController {
+public interface IDAController {
 
     public void importarModelo(Model model, String fichero) throws Exception;
 

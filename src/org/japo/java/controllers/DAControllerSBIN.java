@@ -20,13 +20,12 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import org.japo.java.models.Model;
-import org.japo.java.interfaces.IDataAccessController;
 
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class DataAccessControllerSBIN implements IDataAccessController {
+public class DAControllerSBIN implements IDAController {
 
     // Fichero SBIN > Modelo
     @Override

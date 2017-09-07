@@ -15,57 +15,52 @@
  */
 package org.japo.java.controllers;
 
-import java.util.Properties;
 import org.japo.java.models.Model;
-import org.japo.java.libraries.UtilesApp;
-import org.japo.java.libraries.UtilesValidacion;
-import org.japo.java.interfaces.IDataAccessController;
+import org.japo.java.libraries.UtilesCSV;
 
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class DataAccessControllerPRP implements IDataAccessController {
-    // Nombres Propiedades
-//    public static final String PRP_ITEM1 = "nombre.subnombre";
-    
-    // Fichero Propiedades > Modelo
+public class DAControllerCSV implements IDAController {
+
+    // Fichero CSV > Modelo
     @Override
     public void importarModelo(Model model, String fichero) throws Exception {
-        // Fichero Propiedades > Propiedades
-        Properties prp = UtilesApp.cargarPropiedades(fichero);
+        // Fichero CSV > Lista Items
+        String[] items = UtilesCSV.importarItemsCSV(fichero);
 
-        // Propiedades > Modelo
-        convertirPropiedadesModelo(prp, model);
+        // Lista Items > Modelo
+        convertirArrayModelo(items, model);
     }
 
-    // Modelo > Fichero Propiedades
+    // Modelo > Fichero CSV
     @Override
     public void exportarModelo(Model model, String fichero) throws Exception {
-        // Propiedades
-        Properties prp = new Properties();
+        // Lista Items
+        String[] items = new String[Model.NUM_ITEMS];
 
-        // Modelo > Propiedades
-        convertirModeloPropiedades(model, prp);
+        // Modelo > Lista Items
+        convertirModeloArray(model, items);
 
-        // Propiedades > Fichero Propiedades
-        UtilesApp.guardarPropiedades(prp, fichero);
+        // Lista Items > Fichero CSV
+        UtilesCSV.exportarItemsCSV(items, fichero);
     }
 
-    // Modelo > Propiedades
-    void convertirModeloPropiedades(Model model, Properties prp) {
+    // Modelo > Lista Items
+    public void convertirModeloArray(Model model, String[] items) {
 
     }
 
-    // Propiedades > Modelo
-    void convertirPropiedadesModelo(Properties prp, Model model) throws Exception {
+    // Lista Items > Modelo
+    public void convertirArrayModelo(String[] items, Model model) throws Exception {
         /*
         1 - Sustituir Item1 por el primer campo del modelo
         2 - Repetir estructura para el resto de items
         */
-        // Item1
-//        if (UtilesValidacion.validarDato(prp.getProperty(PRP_ITEM1), Model.ER_ITEM1)) {
-//            model.setItem1(model.getItem1());
+//        // Item1
+//        if (UtilesValidacion.validarDato(items[Model.POS_ITEM1], Model.ER_ITEM1)) {
+//            model.setItem1(items[Model.POS_ITEM1]);
 //        } else {
 //            throw new Exception("Datos corruptos");
 //        }

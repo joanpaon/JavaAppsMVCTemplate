@@ -15,37 +15,45 @@
  */
 package org.japo.java.controllers;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.Writer;
+import org.japo.java.libraries.UtilesValidacion;
 import org.japo.java.models.Model;
-import org.japo.java.interfaces.IDataAccessController;
 
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class DataAccessControllerSXML implements IDataAccessController {
+public class DAControllerJSON implements IDAController {
 
-    // Fichero SXML > Modelo
+    // Fichero JSON > Modelo
     @Override
-    public void importarModelo(Model model, String fichero) throws Exception {
-        try (XMLDecoder entrada = new XMLDecoder(new FileInputStream(fichero))) {
-            // Fichero SXML > Modelo (Importado)
-            Model modelClon = (Model) entrada.readObject();
+    public void importarModelo(Model modeloFin, String fichero) throws Exception {
+        try (JsonReader entrada = new JsonReader(new FileReader(fichero))) {
+            // Crea Objeto Gson
+            Gson gson = new Gson();
+
+            // Fichero JSON > Modelo (Importado)
+            Model modeloIni = gson.fromJson(entrada, Model.class);
 
             // Modelo (Importado) > Modelo
-            convertirModeloModelo(modelClon, model);
+            convertirModeloModelo(modeloIni, modeloFin);
         }
     }
 
-    // Modelo > Fichero SXML
+    // Modelo > Fichero JSON
     @Override
     public void exportarModelo(Model model, String fichero) throws Exception {
-        try (XMLEncoder salida = new XMLEncoder(new FileOutputStream(fichero))) {
-            // Escribe el modelo
-            salida.writeObject(model);
+        try (Writer salida = new FileWriter(fichero)) {
+            // Instancia Objeto Gson
+            Gson gson = new GsonBuilder().create();
+
+            // Escribe los datos en el fichero
+            gson.toJson(model, salida);
         }
     }
 
@@ -53,7 +61,7 @@ public class DataAccessControllerSXML implements IDataAccessController {
     public void convertirModeloModelo(Model modeloIni, Model modeloFin) throws Exception {
         /*
         1 - Sustituir Item1 por el primer campo del modelo
-        2 - Repetir estructura para el resto de campos
+        2 - Repetir estructura para el resto de items
         */
 //        // Item1
 //        if (UtilesValidacion.validarDato(modeloIni.getItem1(), Model.ER_ITEM1)) {

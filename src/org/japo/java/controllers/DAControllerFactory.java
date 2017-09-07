@@ -15,40 +15,43 @@
  */
 package org.japo.java.controllers;
 
-import java.util.Properties;
-import org.japo.java.interfaces.IDataAccessController;
-
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class DataAccessControllerFactory {
+public class DAControllerFactory {
 
-    public static IDataAccessController obtenerDAC(Properties prp) {
+    // Tipos Persistencia
+    public static final String DA_TYPE_CSV = "CSV";
+    public static final String DA_TYPE_JSON = "JSON";
+    public static final String DA_TYPE_PRP = "PRP";
+    public static final String DA_TYPE_SBIN = "SBIN";
+    public static final String DA_TYPE_SXML = "SXML";
+
+    // Devuelve el Controlador de Persistencia
+    public static IDAController obtenerDAC(String tipo) {
         // Referencia DAC
-        IDataAccessController dac = null;
-
-        // Tipo de Persistencia
-        String persistencia = prp.getProperty(Controller.PRP_DA_PERSISTENCIA);
+        IDAController dac;
 
         // Instancia Controlador Fersistencia
-        switch (persistencia) {
-            case "CSV":
-                dac = new DataAccessControllerCSV();
+        switch (tipo) {
+            case DA_TYPE_CSV:
+                dac = new DAControllerCSV();
                 break;
-            case "JSON":
-                dac = new DataAccessControllerJSON();
+            case DA_TYPE_PRP:
+                dac = new DAControllerPRP();
                 break;
-            case "PRP":
-                dac = new DataAccessControllerPRP();
+            case DA_TYPE_SBIN:
+                dac = new DAControllerSBIN();
                 break;
-            case "SBIN":
-                dac = new DataAccessControllerSBIN();
+            case DA_TYPE_SXML:
+                dac = new DAControllerSXML();
                 break;
-            case "SXML":
-                dac = new DataAccessControllerSXML();
+            case DA_TYPE_JSON:
+            default:
+                dac = new DAControllerJSON();
         }
-        
+
         // Devuelve Controlador Persistencia
         return dac;
     }
