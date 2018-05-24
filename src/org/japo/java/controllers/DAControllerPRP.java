@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017 José A. Pacheco Ondoño - joanpaon@gmail.com.
+ * Copyright 2018 - José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 package org.japo.java.controllers;
 
 import java.util.Properties;
-import org.japo.java.models.Model;
 import org.japo.java.libraries.UtilesApp;
-import org.japo.java.libraries.UtilesValidacion;
+import org.japo.java.models.Model;
 
 /**
  *
@@ -32,7 +31,7 @@ public class DAControllerPRP implements IDAController {
     @Override
     public void importarModelo(Model model, String fichero) throws Exception {
         // Fichero Propiedades > Propiedades
-        Properties prp = UtilesApp.cargarPropiedades(fichero);
+        Properties prp = UtilesApp.importarPropiedades(fichero);
 
         // Propiedades > Modelo
         convertirPropiedadesModelo(prp, model);
@@ -48,7 +47,7 @@ public class DAControllerPRP implements IDAController {
         convertirModeloPropiedades(model, prp);
 
         // Propiedades > Fichero Propiedades
-        UtilesApp.guardarPropiedades(prp, fichero);
+        UtilesApp.exportarPropiedades(prp, fichero);
     }
 
     // Modelo > Propiedades

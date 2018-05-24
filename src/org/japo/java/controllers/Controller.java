@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017 José A. Pacheco Ondoño - joanpaon@gmail.com.
+ * Copyright 2018 - José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.japo.java.controllers;
 
+import org.japo.java.libraries.UtilesAccesoDatos;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JOptionPane;
-import org.japo.java.main.Main;
 import org.japo.java.models.Model;
 import org.japo.java.views.View;
 
@@ -28,6 +28,14 @@ import org.japo.java.views.View;
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
 public class Controller {
+
+    // Propiedades
+    public static final String PRP_PERSISTENCE_TYPE = "persistence_type";
+    public static final String PRP_PERSISTENCE_FILENAME = "persistence_filename";
+
+    // Valores por defecto
+    public static final String DEF_PERSISTENCE_TYPE = UtilesAccesoDatos.PERSISTENCE_TYPE_JSON;
+    public static final String DEF_PERSISTENCE_FILENAME = "data.json";
 
     // Referencias
     private final Properties prp;
@@ -44,21 +52,24 @@ public class Controller {
         model = new Model();
 
         // Controlador de Acceso a Datos
-        dac = DAControllerFactory.obtenerDAC(prp.getProperty(
-                Main.PRP_DA_TYPE, DAControllerFactory.DA_TYPE_JSON));
+        dac = UtilesAccesoDatos.obtenerControladorAccesoDatos(prp.getProperty(PRP_PERSISTENCE_TYPE, DEF_PERSISTENCE_TYPE));
 
         // Crear Vista
         view = new View(model, this, prp);
+    }
+    
+    // Arranque del programa
+    public final void start() {
         EventQueue.invokeLater(() -> {
             view.setVisible(true);
         });
     }
 
     // Persistencia > Modelo > Vista
-    public void procesarImportacion(ActionEvent evt) {
+    public void importarPersistencia(ActionEvent evt) {
         try {
             // Fichero de Datos
-            String fichero = prp.getProperty(Main.PRP_DA_FILE, Main.DEF_DA_FILE);
+            String fichero = prp.getProperty(PRP_PERSISTENCE_FILENAME, DEF_PERSISTENCE_FILENAME);
 
             // Persistencia > Modelo
             dac.importarModelo(model, fichero);
@@ -67,17 +78,15 @@ public class Controller {
             sincronizarModeloVista(model, view);
 
             // Mensaje - Importación OK
-            String msg = "Datos importados correctamente";
-            JOptionPane.showMessageDialog(view, msg);
+            JOptionPane.showMessageDialog(view, "Datos importados correctamente");
         } catch (Exception e) {
             // Mensaje - Importación NO
-            String msg = "Error al importar los datos";
-            JOptionPane.showMessageDialog(view, msg);
+            JOptionPane.showMessageDialog(view, "Error al importar los datos");
         }
     }
 
     // Vista > Modelo > Persistencia
-    public void procesarExportacion(ActionEvent evt) {
+    public void exportarPersistencia(ActionEvent evt) {
         // Validar Datos Vista
         if (validarControlesSubjetivos(view)) {
             try {
@@ -85,18 +94,16 @@ public class Controller {
                 sincronizarVistaModelo(view, model);
 
                 // Fichero de Datos
-                String fichero = prp.getProperty(Main.PRP_DA_FILE, Main.DEF_DA_FILE);
+                String fichero = prp.getProperty(PRP_PERSISTENCE_FILENAME, DEF_PERSISTENCE_FILENAME);
 
                 // Modelo > Persistencia
                 dac.exportarModelo(model, fichero);
 
                 // Mensaje - Exportación OK
-                String msg = "Datos exportados correctamente";
-                JOptionPane.showMessageDialog(view, msg);
+                JOptionPane.showMessageDialog(view, "Datos exportados correctamente");
             } catch (Exception e) {
                 // Mensaje - Exportación NO
-                String msg = "Error al exportar los datos";
-                JOptionPane.showMessageDialog(view, msg);
+                JOptionPane.showMessageDialog(view, "Error al exportar los datos");
             }
         } else {
             // Mensaje - Validación Pendiente

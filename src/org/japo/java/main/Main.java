@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017 José A. Pacheco Ondoño - joanpaon@gmail.com.
+ * Copyright 2018 - José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 package org.japo.java.main;
 
 import java.util.Properties;
+import javax.swing.SwingUtilities;
 import org.japo.java.controllers.Controller;
-import org.japo.java.controllers.DAControllerFactory;
 import org.japo.java.libraries.UtilesApp;
-import org.japo.java.libraries.UtilesSwing;
 
 /**
  *
@@ -27,38 +26,21 @@ import org.japo.java.libraries.UtilesSwing;
  */
 public class Main {
 
-    // Fichero Propiedades Aplicación
-    public static final String FICHERO_PROPIEDADES = "app.properties";
-
-    // Propiedades App
-    public static final String PRP_PUERTO_BLOQUEO = "gui.puerto_bloqueo";
-    public static final String PRP_LOOK_AND_FEEL = "gui.look_and_feel";
-    public static final String PRP_RUTA_FAVICON = "gui.ruta_favicon";
-    public static final String PRP_DA_FILE = "da.fichero";
-    public static final String PRP_DA_TYPE = "da.tipo";
-
-    // Valores por Defecto
-    public static final String DEF_PUERTO_BLOQUEO = "54321";    
-    public static final String DEF_LOOK_AND_FEEL = UtilesSwing.LNF_WINDOWS;    
-    public static final String DEF_RUTA_FAVICON = "img/favicon.png";   
-    public static final String DEF_DA_FILE = "datos.json";
-    public static final String DEF_DA_TYPE = DAControllerFactory.DA_TYPE_JSON;
-
-    // Punto de entrada a la aplicación
+    // Fichero Propiedades App
+    public static final String RECURSO_PROPIEDADES = "properties/app.properties";
+    
+    // Entrada a la Aplicación
     public static void main(String[] args) {
-        // Inicializa Aplicación
-        Main main = new Main();
+        // Lanzar GUI
+        SwingUtilities.invokeLater(() -> {
+            // Cargar Propiedades App
+            Properties prp = UtilesApp.importarPropiedadesRecurso(RECURSO_PROPIEDADES);
 
-        // Ejecuta la Aplicación
-        main.launchApp();
-    }
-
-    // Ejecuta la aplicación
-    private void launchApp() {
-        // Cargar Propiedades Aplicación
-        Properties prpApp = UtilesApp.cargarPropiedades(FICHERO_PROPIEDADES);
-
-        // Crear Controlador
-        Controller control = new Controller(prpApp);
+            // Crear Controlador
+            Controller control = new Controller(prp);
+            
+            // Arrancar el programa
+            control.start();
+        });
     }
 }

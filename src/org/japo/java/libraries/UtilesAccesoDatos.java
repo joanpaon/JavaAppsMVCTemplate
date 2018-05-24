@@ -1,5 +1,5 @@
-/*
- * Copyright 2017 José A. Pacheco Ondoño - joanpaon@gmail.com.
+/* 
+ * Copyright 2018 - José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,41 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.japo.java.controllers;
+package org.japo.java.libraries;
+
+import org.japo.java.controllers.DAControllerCSV;
+import org.japo.java.controllers.DAControllerJSON;
+import org.japo.java.controllers.DAControllerPRP;
+import org.japo.java.controllers.DAControllerSBIN;
+import org.japo.java.controllers.DAControllerSXML;
+import org.japo.java.controllers.IDAController;
 
 /**
  *
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
-public class DAControllerFactory {
+public class UtilesAccesoDatos {
 
     // Tipos Persistencia
-    public static final String DA_TYPE_CSV = "CSV";
-    public static final String DA_TYPE_JSON = "JSON";
-    public static final String DA_TYPE_PRP = "PRP";
-    public static final String DA_TYPE_SBIN = "SBIN";
-    public static final String DA_TYPE_SXML = "SXML";
+    public static final String PERSISTENCE_TYPE_CSV = "CSV";
+    public static final String PERSISTENCE_TYPE_JSON = "JSON";
+    public static final String PERSISTENCE_TYPE_PRP = "PRP";
+    public static final String PERSISTENCE_TYPE_SBIN = "SBIN";
+    public static final String PERSISTENCE_TYPE_SXML = "SXML";
 
     // Devuelve el Controlador de Persistencia
-    public static IDAController obtenerDAC(String tipo) {
+    public static final IDAController obtenerControladorAccesoDatos(String tipo) {
         // Referencia DAC
         IDAController dac;
 
         // Instancia Controlador Fersistencia
         switch (tipo) {
-            case DA_TYPE_CSV:
+            case PERSISTENCE_TYPE_CSV:
                 dac = new DAControllerCSV();
                 break;
-            case DA_TYPE_PRP:
+            case PERSISTENCE_TYPE_PRP:
                 dac = new DAControllerPRP();
                 break;
-            case DA_TYPE_SBIN:
+            case PERSISTENCE_TYPE_SBIN:
                 dac = new DAControllerSBIN();
                 break;
-            case DA_TYPE_SXML:
+            case PERSISTENCE_TYPE_SXML:
                 dac = new DAControllerSXML();
                 break;
-            case DA_TYPE_JSON:
+            case PERSISTENCE_TYPE_JSON:
             default:
                 dac = new DAControllerJSON();
         }

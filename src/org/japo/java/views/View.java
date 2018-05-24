@@ -1,5 +1,5 @@
 /* 
- * Copyright 2017 José A. Pacheco Ondoño - joanpaon@gmail.com.
+ * Copyright 2018 - José A. Pacheco Ondoño - joanpaon@gmail.com.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.japo.java.views;
 import java.util.Properties;
 import org.japo.java.controllers.Controller;
 import org.japo.java.libraries.UtilesSwing;
-import org.japo.java.main.Main;
 import org.japo.java.models.Model;
 
 /**
@@ -26,6 +25,18 @@ import org.japo.java.models.Model;
  * @author José A. Pacheco Ondoño - joanpaon@gmail.com
  */
 public class View extends javax.swing.JFrame {
+
+    // Propiedades App
+    public static final String PRP_LOOK_AND_FEEL_PROFILE = "look_and_feel_profile";
+    public static final String PRP_FAVICON_RESOURCE = "favicon_resource";
+    public static final String PRP_BACKGROUND_RESOURCE = "background_resource";
+    public static final String PRP_FONT_RESOURCE = "font_resource";
+
+    // Valores por Defecto
+    public static final String DEF_LOOK_AND_FEEL_PROFILE = UtilesSwing.LNF_WINDOWS_PROFILE;
+    public static final String DEF_FAVICON_RESOURCE = "images/favicon.png";
+    public static final String DEF_BACKGROUND_RESOURCE = "images/background.png";
+    public static final String DEF_FONT_RESOURCE = "fonts/default_font.ttf";
 
     // Referencias
     private Model model;
@@ -135,11 +146,11 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarActionPerformed
-        control.procesarImportacion(evt);
+        control.importarPersistencia(evt);
     }//GEN-LAST:event_btnImportarActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        control.procesarExportacion(evt);
+        control.exportarPersistencia(evt);
     }//GEN-LAST:event_btnExportarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -156,17 +167,21 @@ public class View extends javax.swing.JFrame {
         this.control = control;
         this.prp = prp;
 
-        // Establece Lnf
-        UtilesSwing.establecerLnF(prp.getProperty(
-                Main.PRP_LOOK_AND_FEEL, Main.DEF_LOOK_AND_FEEL));
+        // Establecer LnF
+        UtilesSwing.establecerLnFProfile(prp.getProperty(
+                PRP_LOOK_AND_FEEL_PROFILE, DEF_LOOK_AND_FEEL_PROFILE));
 
-        // Establecer Favicon
-        UtilesSwing.establecerFavicon(this, prp.getProperty(
-                Main.PRP_RUTA_FAVICON, Main.DEF_RUTA_FAVICON));
+        // Panel Contenedor - Imagen de fondo
+        UtilesSwing.establecerFondoVentanaRecurso(this, prp.getProperty(
+                PRP_BACKGROUND_RESOURCE, DEF_BACKGROUND_RESOURCE));
     }
 
     // Inicializacion Posterior
     private void initAfter() {
+        // Establecer Favicon
+        UtilesSwing.establecerFavicon(this, prp.getProperty(
+                PRP_FAVICON_RESOURCE, DEF_FAVICON_RESOURCE));
+        
         // Modelo > Vista
         control.sincronizarModeloVista(model, this);
 
